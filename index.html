@@ -1,0 +1,89 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Planner</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #eef2f3; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 350px; position: relative; }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        label { display: block; margin-top: 15px; font-size: 14px; color: #666; }
+        input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 8px; margin-top: 25px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.3s; }
+        button:hover { background: #0056b3; }
+        .result-box { margin-top: 25px; padding: 15px; border-top: 2px solid #eee; }
+        .perc { font-size: 24px; color: #007bff; text-align: center; margin-bottom: 10px; font-weight: bold; }
+        .info { font-size: 16px; color: #444; line-height: 1.6; }
+        .highlight { color: #d9534f; font-weight: bold; }
+        
+        /* Your Signature Style */
+        .footer { 
+            position: fixed; 
+            bottom: 10px; 
+            right: 15px; 
+            font-size: 10px; 
+            color: #999; 
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Attendance Calculator</h2>
+    
+    <label>Total classes present:</label>
+    <input type="number" id="present" placeholder="e.g. 45">
+    
+    <label>Total classes happened:</label>
+    <input type="number" id="total" placeholder="e.g. 60">
+    
+    <label>Attendance percentage you want:</label>
+    <input type="number" id="want" placeholder="e.g. 75">
+    
+    <button onclick="calculate()">Calculate Now</button>
+    
+    <div id="result" class="result-box" style="display:none;">
+        <div id="currentPerc" class="perc"></div>
+        <div id="details" class="info"></div>
+    </div>
+</div>
+
+<div class="footer">MADE BY SHARAVAN RAJ</div>
+
+<script>
+    function calculate() {
+        let present = parseFloat(document.getElementById('present').value);
+        let total = parseFloat(document.getElementById('total').value);
+        let want = parseFloat(document.getElementById('want').value);
+        let resBox = document.getElementById('result');
+
+        if (isNaN(present) || isNaN(total) || isNaN(want) || total === 0) {
+            alert("Please enter valid numbers!");
+            return;
+        }
+
+        let currentResult = (present / total) * 100;
+        resBox.style.display = "block";
+        document.getElementById('currentPerc').innerText = currentResult.toFixed(2) + "%";
+
+        let details = document.getElementById('details');
+
+        if (currentResult >= want) {
+            details.innerHTML = `✅ You are already at or above <span class="highlight">${want}%</span>. Keep it up!`;
+        } else {
+            let needed = Math.ceil((want * total - 100 * present) / (100 - want));
+            let days = (needed / 6).toFixed(1);
+
+            details.innerHTML = `
+                📍 Classes needed: <span class="highlight">${needed}</span><br>
+                📅 Estimated days: <span class="highlight">${days} days</span><br>
+                <small>(Calculated at 6 classes/day)</small>
+            `;
+        }
+    }
+</script>
+
+</body>
+</html>
