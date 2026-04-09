@@ -188,11 +188,13 @@
         }
 
         .history-btn {
-            background: #17a2b8;/*#6c757d*/
+            background: #17a2b8;
             color: white;
         }
 
-        .history-btn:hover { background: #5a6268; }
+        .history-btn:hover { 
+            background: #138496; 
+        }
 
         .share-btn {
             background: #28a745;
@@ -231,6 +233,8 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .history-body {
@@ -267,7 +271,28 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            margin: 10px 0;
+        }
+
+        /* Improved Close Button */
+        .close-modal-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-modal-btn:hover {
+            background: #c82333;
+            transform: scale(1.1);
         }
 
         .footer { 
@@ -338,8 +363,10 @@
     <div class="history-content">
         <div class="history-header">
             <span>📋 Calculation History</span>
-            <button onclick="deleteAllHistory()" class="delete-all-btn">🗑️ Delete All</button>
-            <button onclick="closeHistory()" style="background:none;border:none;font-size:20px;cursor:pointer;">×</button>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <button onclick="deleteAllHistory()" class="delete-all-btn">🗑️ Delete All</button>
+                <button onclick="closeHistory()" class="close-modal-btn">✕</button>
+            </div>
         </div>
         <div id="historyBody" class="history-body">
             <!-- History items will be injected here by JS -->
@@ -373,8 +400,8 @@ function saveToHistory(present, total, want, currentPerc) {
         })
     };
 
-    history.unshift(entry); // Add to top
-    if (history.length > 20) history.pop(); // Limit to 20 entries
+    history.unshift(entry);
+    if (history.length > 20) history.pop();
     localStorage.setItem("attendanceHistory", JSON.stringify(history));
 }
 
@@ -413,7 +440,7 @@ function deleteHistoryItem(index) {
     let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
     history.splice(index, 1);
     localStorage.setItem("attendanceHistory", JSON.stringify(history));
-    showHistory(); // Refresh
+    showHistory();
 }
 
 // Delete All History
@@ -424,10 +451,11 @@ function deleteAllHistory() {
     }
 }
 
-// Updated Share Function - Now shares the webpage link
+// Improved Share Function - Now includes Target %
 function shareResult() {
     const percEl = document.getElementById('currentPerc');
     const detailsEl = document.getElementById('details');
+    const wantInput = document.getElementById('want').value;
     
     if (!percEl || percEl.innerText.trim() === "") {
         alert("Please calculate your attendance first before sharing!");
@@ -435,42 +463,45 @@ function shareResult() {
     }
 
     const currentPerc = percEl.innerText;
-    const detailsText = detailsEl.innerText.trim();
+    let detailsText = detailsEl.innerText.trim();
 
-    const shareText = `🎯 My Attendance Status: ${currentPerc}\n${detailsText}\n\n`;
+    // Clean up details (remove dropdown text)
+    detailsText = detailsText.replace(/At \d+[\s\d]*classes\/day/gi, '')
+                             .replace(/\s+/g, ' ')
+                             .trim();
+
+    const targetPerc = wantInput ? wantInput + "%" : "Not set";
+
+    const shareText = `🎯 My Attendance Status: ${currentPerc}\n` +
+                      `Target: ${targetPerc}\n\n` +
+                      `${detailsText}\n\n`;
 
     const pageUrl = window.location.href;
 
     const fullMessage = `${shareText}Calculated using Attendance Planner Pro\n${pageUrl}`;
 
-    // Use Web Share API if available (mobile-friendly)
     if (navigator.share) {
         navigator.share({
             title: 'Attendance Planner Pro',
             text: fullMessage,
             url: pageUrl
-        }).catch(err => {
-            console.log("Share cancelled or failed", err);
-        });
-    } 
-    // Fallback: Copy to clipboard for desktop
-    else {
+        }).catch(() => {});
+    } else {
         navigator.clipboard.writeText(fullMessage).then(() => {
-            alert("✅ Attendance result + webpage link copied to clipboard!\nYou can now paste it anywhere.");
+            alert("✅ Clean result with Target copied to clipboard!\nReady to share.");
         }).catch(() => {
             alert("Failed to copy. Please try again.");
         });
     }
 }
 
-// Function to reset the form and clear storage
+// Reset Form
 function resetForm() {
     document.getElementById('present').value = '';
     document.getElementById('total').value = '';
     document.getElementById('want').value = '';
     document.getElementById('result').style.display = 'none';
     localStorage.removeItem("attendanceData");
-    console.log("Storage cleared.");
 }
 
 // Auto-save input values
@@ -539,11 +570,10 @@ function calculate() {
         `;
     }
 
-    // Save to history after successful calculation
     saveToHistory(present, total, want, currentResult);
 }
 
-// Confetti animation optimized
+// Confetti animation
 function spawnConfetti(count = 50) {
     const colors = ["#ff4d4d", "#4dff88", "#4db8ff", "#ffd24d", "#b84dff"];
     for (let i = 0; i < count; i++) {
@@ -584,9 +614,9 @@ window.onload = function() {
     let saved = localStorage.getItem("attendanceData");
     if (saved) {
         let data = JSON.parse(saved);
-        document.getElementById("present").value = data.present;
-        document.getElementById("total").value = data.total;
-        document.getElementById("want").value = data.want;
+        document.getElementById("present").value = data.present || '';
+        document.getElementById("total").value = data.total || '';
+        document.getElementById("want").value = data.want || '';
     }
 };
 </script>
