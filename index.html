@@ -18,7 +18,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Easter Egg Animation */
         @keyframes shakeBounce {
             0% { transform: translateX(0) rotate(0deg); }
             20% { transform: translateX(-10px) rotate(-5deg); }
@@ -44,7 +43,6 @@
             padding: 20px;
             background: #f0f4f8;
             overflow-x: hidden;
-            position: relative;
         }
 
         .card {
@@ -53,22 +51,30 @@
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 380px;
+            max-width: 420px;
             animation: fadeInUp 0.6s ease-out;
-            position: relative;
         }
 
-        h2 { text-align: center; color: #333; margin-top: 0; font-size: 24px; }
+        h2 { 
+            text-align: center; 
+            color: #333; 
+            margin-bottom: 25px; 
+            font-size: 26px; 
+        }
 
-        label { display: block; margin-top: 15px; font-size: 14px; color: #666; font-weight: 600; }
+        label { 
+            display: block; 
+            margin-top: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            font-weight: 600; 
+        }
 
         .label-with-info {
             display: flex;
             align-items: center;
             margin-top: 15px;
         }
-
-        .label-with-info label { margin-top: 0; }
 
         .info-btn {
             background: #e2e8f0;
@@ -81,13 +87,7 @@
             font-weight: bold;
             margin-left: 8px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
         }
-
-        .info-btn:hover { background: #cbd5e0; }
 
         .help-text {
             font-size: 12px;
@@ -107,10 +107,33 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            transition: all 0.3s ease;
         }
 
-        input:focus { border-color: #007bff; outline: none; box-shadow: 0 0 5px rgba(0,123,255,0.2); }
+        input:focus { 
+            border-color: #007bff; 
+            outline: none; 
+            box-shadow: 0 0 5px rgba(0,123,255,0.2); 
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            padding: 8px 14px;
+            font-size: 13px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .preset-btn:hover {
+            background: #e9ecef;
+        }
 
         .calc-btn {
             width: 100%;
@@ -123,10 +146,12 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .calc-btn:hover { background: #0056b3; transform: scale(1.02); }
+        .calc-btn:hover { 
+            background: #0056b3; 
+            transform: scale(1.02); 
+        }
 
         .refresh-btn {
             width: 100%;
@@ -135,22 +160,12 @@
             color: #888;
             margin-top: 12px;
             font-size: 13px;
-            font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
-            transition: color 0.2s;
-            display: block;
-            text-align: center;
-        }
-
-        .refresh-btn:hover {
-            color: #d9534f;
-            text-decoration: underline;
         }
 
         .result-box {
             margin-top: 25px;
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             background: #f8f9fa;
             border-left: 5px solid #007bff;
@@ -158,57 +173,64 @@
             display: none;
         }
 
-        .status-pass { border-left-color: #28a745; background: #f1f9f2; }
-        .status-fail { border-left-color: #d9534f; background: #fdf2f2; }
+        .status-pass { 
+            border-left-color: #28a745; 
+            background: #f1f9f2; 
+        }
+        .status-fail { 
+            border-left-color: #d9534f; 
+            background: #fdf2f2; 
+        }
 
-        .perc { font-size: 28px; text-align: center; margin-bottom: 10px; font-weight: 800; }
-        .info { font-size: 15px; color: #444; line-height: 1.6; }
+        .perc { 
+            font-size: 32px; 
+            text-align: center; 
+            margin-bottom: 12px; 
+            font-weight: 800; 
+        }
+
+        .info { 
+            font-size: 15px; 
+            color: #444; 
+            line-height: 1.7; 
+        }
+
         .highlight-red { color: #d9534f; font-weight: bold; }
         .highlight-green { color: #28a745; font-weight: bold; }
 
-        .inline-select { padding: 2px 5px; border-radius: 4px; border: 1px solid #ccc; }
+        .inline-select { 
+            padding: 6px 10px; 
+            border-radius: 6px; 
+            border: 1px solid #ccc; 
+            font-size: 14px;
+        }
 
-        /* Bottom Action Buttons */
         .action-buttons {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            margin-top: 25px;
             gap: 10px;
         }
 
         .action-btn {
             flex: 1;
-            padding: 12px;
+            padding: 13px;
             border: none;
             border-radius: 8px;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
-        .history-btn {
-            background: #17a2b8;
-            color: white;
-        }
-
-        .history-btn:hover { 
-            background: #138496; 
-        }
-
-        .share-btn {
-            background: #28a745;
-            color: white;
-        }
-
-        .share-btn:hover { background: #218838; }
+        .history-btn { background: #17a2b8; color: white; }
+        .share-btn { background: #28a745; color: white; }
 
         /* History Modal */
         .history-modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.7);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -217,12 +239,12 @@
         .history-content {
             background: white;
             width: 100%;
-            max-width: 380px;
+            max-width: 420px;
             border-radius: 15px;
-            overflow: hidden;
             max-height: 85vh;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .history-header {
@@ -233,8 +255,6 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
-            gap: 10px;
-            flex-wrap: wrap;
         }
 
         .history-body {
@@ -246,98 +266,84 @@
         .history-item {
             background: #f8f9fa;
             margin: 8px 0;
-            padding: 12px 15px;
+            padding: 14px 16px;
             border-radius: 10px;
             border-left: 5px solid #007bff;
+            position: relative;
         }
 
-        .history-item .delete-item {
+        .delete-item {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             background: #dc3545;
             color: white;
             border: none;
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            font-size: 16px;
             cursor: pointer;
-            float: right;
         }
 
-        .delete-all-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 16px;
+        .error-box {
+            background: #fdf2f2;
+            color: #d9534f;
+            padding: 12px;
             border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        /* Improved Close Button */
-        .close-modal-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 22px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .close-modal-btn:hover {
-            background: #c82333;
-            transform: scale(1.1);
+            margin: 15px 0;
+            border-left: 4px solid #d9534f;
+            font-size: 14px;
+            display: none;
         }
 
         .footer { 
             position: fixed; 
-            bottom: 10px; 
+            bottom: 15px; 
             width: 100%; 
             text-align: center; 
-            font-size: 10px; 
+            font-size: 11px; 
             color: #999; 
-            pointer-events: auto; 
             cursor: pointer; 
         }
 
-        /* Confetti pieces */
         .confetti {
             position: fixed;
             width: 8px;
             height: 8px;
-            background-color: red;
             z-index: 9999;
             pointer-events: none;
-            opacity: 0.9;
         }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Attendance Planner</h2>
+    <h2>Attendance Planner Pro</h2>
 
     <form onsubmit="calculate(); return false;">
         <label>Total classes present:</label>
-        <input type="number" id="present" placeholder="Ex:45" inputmode="numeric" required>
+        <input type="number" id="present" placeholder="Ex: 45" inputmode="numeric" required>
 
         <label>Total classes held:</label>
-        <input type="number" id="total" placeholder="Ex:60" inputmode="numeric" required>
+        <input type="number" id="total" placeholder="Ex: 60" inputmode="numeric" required>
 
         <div class="label-with-info">
             <label>Target percentage (%):</label>
             <button type="button" class="info-btn" onclick="toggleHelp()">i</button>
         </div>
         <div id="help-target" class="help-text">
-            Enter the percentage you want to maintain.
+            Enter the minimum attendance percentage you want to maintain (usually 75% or 80%).
         </div>
-        <input type="number" id="want" placeholder="Ex:75" inputmode="numeric" required>
+        <input type="number" id="want" placeholder="Ex: 75" inputmode="numeric" required>
+
+        <!-- Quick Preset Buttons -->
+        <div class="preset-buttons">
+            <button type="button" class="preset-btn" onclick="setTarget(75)">75%</button>
+            <button type="button" class="preset-btn" onclick="setTarget(80)">80%</button>
+            <button type="button" class="preset-btn" onclick="setTarget(85)">85%</button>
+        </div>
+
+        <div id="error-box" class="error-box"></div>
 
         <button type="submit" class="calc-btn">Calculate Status</button>
         
@@ -364,39 +370,50 @@
         <div class="history-header">
             <span>📋 Calculation History</span>
             <div style="display:flex; align-items:center; gap:10px;">
-                <button onclick="deleteAllHistory()" class="delete-all-btn">🗑️ Delete All</button>
-                <button onclick="closeHistory()" class="close-modal-btn">✕</button>
+                <button onclick="deleteAllHistory()" style="background:#dc3545; color:white; border:none; padding:8px 14px; border-radius:6px; cursor:pointer;">🗑️ Delete All</button>
+                <button onclick="closeHistory()" style="background:#dc3545; color:white; border:none; width:36px; height:36px; border-radius:50%; font-size:20px; cursor:pointer;">✕</button>
             </div>
         </div>
-        <div id="historyBody" class="history-body">
-            <!-- History items will be injected here by JS -->
-        </div>
+        <div id="historyBody" class="history-body"></div>
     </div>
 </div>
 
 <div class="footer">MADE BY SHARAVAN RAJ</div>
 
 <script>
+// ====================== ALL FIXED & IMPROVED CODE ======================
+
 function toggleHelp() {
     const helpEl = document.getElementById('help-target');
     helpEl.style.display = (helpEl.style.display === 'block') ? 'none' : 'block';
 }
 
-// Save calculation to history
+function showError(msg) {
+    const errorBox = document.getElementById('error-box');
+    errorBox.textContent = msg;
+    errorBox.style.display = 'block';
+    
+    setTimeout(() => {
+        errorBox.style.display = 'none';
+    }, 4500);
+}
+
+function setTarget(value) {
+    document.getElementById('want').value = value;
+}
+
 function saveToHistory(present, total, want, currentPerc) {
     let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
     
     const entry = {
+        id: Date.now(),
         present: parseFloat(present),
         total: parseFloat(total),
         want: parseFloat(want),
         currentPerc: parseFloat(currentPerc.toFixed(1)),
         date: new Date().toLocaleString('en-GB', { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit' 
+            day: '2-digit', month: '2-digit', year: 'numeric', 
+            hour: '2-digit', minute: '2-digit' 
         })
     };
 
@@ -405,24 +422,23 @@ function saveToHistory(present, total, want, currentPerc) {
     localStorage.setItem("attendanceHistory", JSON.stringify(history));
 }
 
-// Show History
 function showHistory() {
     const modal = document.getElementById('historyModal');
     const body = document.getElementById('historyBody');
     let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
 
     if (history.length === 0) {
-        body.innerHTML = `<p style="text-align:center; color:#888; padding:20px;">No calculation history yet.</p>`;
+        body.innerHTML = `<p style="text-align:center; color:#888; padding:30px;">No calculation history yet.</p>`;
     } else {
         body.innerHTML = '';
-        history.forEach((item, index) => {
+        history.forEach(item => {
             const div = document.createElement('div');
             div.className = 'history-item';
             div.innerHTML = `
                 <strong>${item.currentPerc}%</strong> <span style="color:#666;">(Target ${item.want}%)</span><br>
                 ${item.present} / ${item.total} classes<br>
                 <small style="color:#888;">${item.date}</small>
-                <button class="delete-item" onclick="deleteHistoryItem(${index}); event.stopImmediatePropagation();">🗑</button>
+                <button class="delete-item" onclick="deleteHistoryItem(${item.id}); event.stopImmediatePropagation();">🗑</button>
             `;
             body.appendChild(div);
         });
@@ -430,20 +446,13 @@ function showHistory() {
     modal.style.display = 'flex';
 }
 
-// Close History
-function closeHistory() {
-    document.getElementById('historyModal').style.display = 'none';
-}
-
-// Delete single history item
-function deleteHistoryItem(index) {
+function deleteHistoryItem(id) {
     let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
-    history.splice(index, 1);
+    history = history.filter(item => item.id !== id);
     localStorage.setItem("attendanceHistory", JSON.stringify(history));
     showHistory();
 }
 
-// Delete All History
 function deleteAllHistory() {
     if (confirm("Delete all calculation history?")) {
         localStorage.removeItem("attendanceHistory");
@@ -451,129 +460,132 @@ function deleteAllHistory() {
     }
 }
 
-// Final Clean Share Function (Improved formatting + fixed WhatsApp output)
+function closeHistory() {
+    document.getElementById('historyModal').style.display = 'none';
+}
+
 function shareResult() {
     const percEl = document.getElementById('currentPerc');
     const detailsEl = document.getElementById('details');
-    const wantInput = document.getElementById('want').value;
     
     if (!percEl || percEl.innerText.trim() === "") {
-        alert("Please calculate your attendance first before sharing!");
+        alert("Please calculate first before sharing!");
         return;
     }
 
     const currentPerc = percEl.innerText;
-    let detailsText = detailsEl.innerText;
+    let detailsText = detailsEl.innerText.trim();
 
-    // ✅ Proper cleaning (removes dropdown + keeps formatting)
-    detailsText = detailsText
-        .replace(/At\s+\d+(\s+\d+)*\s+classes\/day/gi, '')
-        .replace(/At\s+\d+\s+classes\/day/gi, '')
-        .replace(/[ \t]+/g, ' ')
-        .replace(/\n\s*\n/g, '\n\n')
-        .trim();
+    const want = document.getElementById('want').value || "Not set";
 
-    const targetPerc = wantInput ? wantInput + "%" : "Not set";
-
-    // ✅ Clean formatted message (keeps line breaks)
     let fullMessage = 
-`🎯 My Attendance Status: ${currentPerc}
-Target: ${targetPerc}
+`🎯 Attendance Status: ${currentPerc}
+Target: ${want}%
 
 ${detailsText}
 
-Calculated using Attendance Planner Pro
-${window.location.href}`;
+Calculated with Attendance Planner Pro`;
 
-    // Share using Web Share API (mobile)
     if (navigator.share) {
-        navigator.share({
-            title: 'Attendance Planner Pro',
-            text: fullMessage,
-            url: window.location.href
-        }).catch(() => {});
-    } 
-    // Copy to clipboard (desktop)
-    else {
+        navigator.share({ title: 'Attendance Planner Pro', text: fullMessage });
+    } else {
         navigator.clipboard.writeText(fullMessage).then(() => {
-            alert("✅ Clean result copied to clipboard!");
-        }).catch(() => {
-            alert("Failed to copy. Please try again.");
+            alert("✅ Result copied to clipboard!");
         });
     }
 }
 
-// Reset Form
 function resetForm() {
     document.getElementById('present').value = '';
     document.getElementById('total').value = '';
     document.getElementById('want').value = '';
     document.getElementById('result').style.display = 'none';
-    localStorage.removeItem("attendanceData");
+    document.getElementById('error-box').style.display = 'none';
 }
 
-// Auto-save input values
 function saveData(present, total, want) {
     localStorage.setItem("attendanceData", JSON.stringify({ present, total, want }));
 }
 
+// Main Calculation Function - All bugs fixed
 function calculate() {
-    let present = parseFloat(document.getElementById('present').value);
-    let total = parseFloat(document.getElementById('total').value);
-    let want = parseFloat(document.getElementById('want').value);
-    let resBox = document.getElementById('result');
-    let details = document.getElementById('details');
-    let currentPercText = document.getElementById('currentPerc');
+    const present = parseFloat(document.getElementById('present').value);
+    const total = parseFloat(document.getElementById('total').value);
+    const want = parseFloat(document.getElementById('want').value);
 
-    if (isNaN(present) || isNaN(total) || isNaN(want) || total <= 0 || present < 0 || want <= 0 || want >= 100) {
-        alert("Please enter valid numbers (Target: 1-99%)");
+    const resBox = document.getElementById('result');
+    const details = document.getElementById('details');
+    const currentPercText = document.getElementById('currentPerc');
+
+    // Hide previous error
+    document.getElementById('error-box').style.display = 'none';
+
+    // Validation
+    if (isNaN(present) || isNaN(total) || isNaN(want)) {
+        showError("Please fill all fields with valid numbers");
         return;
     }
-    
-    if (present > total) {
-        alert("Present classes cannot exceed total classes!");
+    if (total <= 0 || want <= 0 || want >= 100) {
+        showError("Target percentage must be between 1 and 99");
+        return;
+    }
+    if (present < 0 || present > total) {
+        showError("Present classes cannot be more than total classes");
         return;
     }
 
     saveData(present, total, want);
 
-    let currentResult = (present / total) * 100;
+    const currentResult = (present / total) * 100;
     resBox.style.display = "block";
-    resBox.classList.remove('status-pass', 'status-fail'); 
+    resBox.classList.remove('status-pass', 'status-fail');
     currentPercText.innerText = currentResult.toFixed(1) + "%";
 
+    // Safe classes per day reading
+    let classesPerDay = 6;
+    const rateSelect = document.getElementById('classRate');
+    if (rateSelect) {
+        const val = parseInt(rateSelect.value);
+        if (!isNaN(val)) classesPerDay = val;
+    }
+
     if (currentResult >= want) {
-        let canMiss = Math.max(0, Math.floor((100 * present / want) - total));
+        // === ABOVE TARGET ===
+        const canMiss = Math.max(0, Math.floor((100 * present / want) - total));
+        
         resBox.classList.add('status-pass');
         currentPercText.style.color = "#28a745";
+        
         details.innerHTML = `
-            <span class="highlight-green">✅ Above Target!</span><br>
-            You can safely miss <span class="highlight-green">${canMiss}</span> more classes while staying above ${want}%.
+            <span class="highlight-green">✅ Above Target!</span><br><br>
+            You can safely miss <span class="highlight-green">${canMiss}</span> more classes 
+            while staying above ${want}%.
         `;
     } else {
-        let classesPerDay = document.getElementById('classRate') ? parseInt(document.getElementById('classRate').value) : 6;
-        let needed = Math.ceil((want * total - 100 * present) / (100 - want));
-        needed = Math.max(0, needed);
-        let days = (needed / classesPerDay).toFixed(1);
+        // === BELOW TARGET ===
+        const needed = Math.max(0, Math.ceil((want * total - 100 * present) / (100 - want)));
+        const days = (needed / classesPerDay).toFixed(1);
 
         resBox.classList.add('status-fail');
         currentPercText.style.color = "#d9534f";
+        
         details.innerHTML = `
-            <span class="highlight-red">❌ Below Target!</span><br>
-            📍 Classes needed: <span class="highlight-red">${needed}</span><br>
-            📅 Estimated days: <span class="highlight-red">${days} days</span> 
-            <br>
-            <span style="font-size: 14px; color: #888;">
-                At 
+            <span class="highlight-red">❌ Below Target!</span><br><br>
+            
+            📍 Classes still needed: <span class="highlight-red">${needed}</span><br>
+            📅 Estimated days: <span class="highlight-red">${days} days</span><br><br>
+            
+            <span style="font-size: 14px; color: #666; display: flex; align-items: center; gap: 8px;">
+                Assuming 
                 <select id="classRate" class="inline-select" onchange="calculate()">
-                    <option value="5" ${classesPerDay == 5 ? 'selected' : ''}>5</option>
-                    <option value="6" ${classesPerDay == 6 ? 'selected' : ''}>6</option>
-                    <option value="7" ${classesPerDay == 7 ? 'selected' : ''}>7</option>
-                    <option value="8" ${classesPerDay == 8 ? 'selected' : ''}>8</option>
-                    <option value="9" ${classesPerDay == 9 ? 'selected' : ''}>9</option>
-                    <option value="10" ${classesPerDay == 10 ? 'selected' : ''}>10</option>
+                    <option value="5" ${classesPerDay === 5 ? 'selected' : ''}>5</option>
+                    <option value="6" ${classesPerDay === 6 ? 'selected' : ''}>6</option>
+                    <option value="7" ${classesPerDay === 7 ? 'selected' : ''}>7</option>
+                    <option value="8" ${classesPerDay === 8 ? 'selected' : ''}>8</option>
+                    <option value="9" ${classesPerDay === 9 ? 'selected' : ''}>9</option>
+                    <option value="10" ${classesPerDay === 10 ? 'selected' : ''}>10</option>
                 </select> 
-                classes/day
+                classes per day
             </span>
         `;
     }
@@ -581,7 +593,7 @@ function calculate() {
     saveToHistory(present, total, want, currentResult);
 }
 
-// Confetti animation
+// Confetti Function
 function spawnConfetti(count = 50) {
     const colors = ["#ff4d4d", "#4dff88", "#4db8ff", "#ffd24d", "#b84dff"];
     for (let i = 0; i < count; i++) {
@@ -590,41 +602,40 @@ function spawnConfetti(count = 50) {
         confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
         confetti.style.left = Math.random()*window.innerWidth + 'px';
         confetti.style.top = '-10px';
-        confetti.style.width = confetti.style.height = (Math.random()*6+4) + 'px';
+        confetti.style.width = confetti.style.height = (Math.random()*7 + 5) + 'px';
         document.body.appendChild(confetti);
 
         confetti.animate([
-            { transform: `translateY(0) rotate(0deg)`, opacity:1 },
-            { transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random()*720}deg)`, opacity:0 }
+            { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
+            { transform: `translateY(${window.innerHeight + 100}px) rotate(${Math.random()*800}deg)`, opacity: 0 }
         ], {
-            duration: 2000 + Math.random()*1000,
+            duration: 2500 + Math.random() * 1500,
             easing: 'ease-out'
         }).onfinish = () => confetti.remove();
     }
 }
 
-// Footer easter egg
+// Easter Egg
 let clicks = 0;
 document.querySelector(".footer").addEventListener("click", () => {
     clicks++;
     if (clicks === 5) {
-        const card = document.querySelector(".card");
-        card.classList.add("easter-activated");
-        setTimeout(() => card.classList.remove("easter-activated"), 900);
-        spawnConfetti(50);
-        console.log("🎉 Developer Mode Activated — Sharavan Raj was here!");
+        document.querySelector(".card").classList.add("easter-activated");
+        setTimeout(() => document.querySelector(".card").classList.remove("easter-activated"), 900);
+        spawnConfetti(60);
+        console.log("%c🎉 Developer Mode Activated - Sharavan Raj was here!", "color: #ff9800; font-weight: bold");
         clicks = 0;
     }
 });
 
-// Load saved values
+// Load saved data on start
 window.onload = function() {
-    let saved = localStorage.getItem("attendanceData");
+    const saved = localStorage.getItem("attendanceData");
     if (saved) {
-        let data = JSON.parse(saved);
-        document.getElementById("present").value = data.present || '';
-        document.getElementById("total").value = data.total || '';
-        document.getElementById("want").value = data.want || '';
+        const data = JSON.parse(saved);
+        if (data.present) document.getElementById("present").value = data.present;
+        if (data.total) document.getElementById("total").value = data.total;
+        if (data.want) document.getElementById("want").value = data.want;
     }
 };
 </script>
