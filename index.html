@@ -451,7 +451,7 @@ function deleteAllHistory() {
     }
 }
 
-// Clean Share Function - Now properly removes dropdown and formats nicely
+// Final Clean Share Function (Fixed - removes dropdown completely)
 function shareResult() {
     const percEl = document.getElementById('currentPerc');
     const detailsEl = document.getElementById('details');
@@ -465,22 +465,23 @@ function shareResult() {
     const currentPerc = percEl.innerText;
     let detailsText = detailsEl.innerText.trim();
 
-    // Better cleaning - remove the entire "At 5 6 7 8 9 10 classes/day" line
+    // Strong cleaning to remove the dropdown line
     detailsText = detailsText
-        .replace(/At \d+\s*5\s*6\s*7\s*8\s*9\s*10 classes\/day/gi, '')
+        .replace(/At\s+\d+\s*5\s*6\s*7\s*8\s*9\s*10\s*classes\/day/gi, '')
+        .replace(/At \d+ classes\/day/gi, '')
         .replace(/\s+/g, ' ')
         .trim();
 
     const targetPerc = wantInput ? wantInput + "%" : "Not set";
 
-    // Create clean formatted message
+    // Build clean message with proper line breaks
     let fullMessage = `🎯 My Attendance Status: ${currentPerc}\n`;
     fullMessage += `Target: ${targetPerc}\n\n`;
     fullMessage += `${detailsText}\n\n`;
     fullMessage += `Calculated using Attendance Planner Pro\n`;
-    fullMessage += `${window.location.href}`;
+    fullMessage += window.location.href;
 
-    // Use Web Share API if available
+    // Share using Web Share API (mobile)
     if (navigator.share) {
         navigator.share({
             title: 'Attendance Planner Pro',
@@ -488,7 +489,7 @@ function shareResult() {
             url: window.location.href
         }).catch(() => {});
     } 
-    // Fallback for desktop browsers
+    // Copy to clipboard (desktop)
     else {
         navigator.clipboard.writeText(fullMessage).then(() => {
             alert("✅ Clean result copied to clipboard!");
