@@ -497,12 +497,13 @@ function shareResult() {
     const currentPerc = percEl.innerText;
     let detailsText = detailsEl.innerText;
 
-    detailsText = detailsText
-        .replace(/At\s+\d+(\s+\d+)*\s+classes\/day/gi, '')
-        .replace(/At\s+\d+\s+classes\/day/gi, '')
-        .replace(/[ \t]+/g, ' ')
-        .replace(/\n\s*\n/g, '\n\n')
-        .trim();
+    // --- FIX STARTS HERE ---
+    // If we are below target, the "Assuming..." block exists. 
+    // We want to strip everything from "Assuming" onwards.
+    if (detailsText.includes("Assuming")) {
+        detailsText = detailsText.split("Assuming")[0].trim();
+    }
+    // --- FIX ENDS HERE ---
 
     const targetPerc = wantInput ? wantInput + "%" : "Not set";
 
