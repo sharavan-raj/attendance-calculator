@@ -463,12 +463,39 @@ function showHistory() {
             body.appendChild(div);
         });
     }
+
     modal.style.display = 'flex';
+    // Push a dummy state so the back button has something to "go back" from
+    window.history.pushState({ modalOpen: true }, "");
 }
 
 function closeHistory() {
-    document.getElementById('historyModal').style.display = 'none';
+    const modal = document.getElementById('historyModal');
+    modal.style.display = 'none';
+    
+    // If the modal was closed via 'X' or clicking outside, 
+    // we go back in history to remove the dummy state we pushed.
+    if (window.history.state && window.history.state.modalOpen) {
+        window.history.back();
+    }
 }
+
+// 1. Close modal when clicking anywhere outside the white box
+window.onclick = function(event) {
+    const modal = document.getElementById('historyModal');
+    if (event.target == modal) {
+        closeHistory();
+    }
+}
+
+// 2. Handle the Browser/Phone Back Button
+window.onpopstate = function(event) {
+    const modal = document.getElementById('historyModal');
+    // If user hits back, just hide the modal (don't call closeHistory or you'll loop)
+    if (modal) {
+        modal.style.display = 'none';
+    }
+};
 
 function deleteHistoryItem(index) {
     let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
@@ -542,7 +569,7 @@ function resetForm() {
 function saveData(present, total, want) {
     localStorage.setItem("attendanceData", JSON.stringify({ present, total, want }));
 }
-
+    
 function calculate() {
     let present = parseFloat(document.getElementById('present').value);
     let total = parseFloat(document.getElementById('total').value);
