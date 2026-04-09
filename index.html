@@ -451,7 +451,7 @@ function deleteAllHistory() {
     }
 }
 
-// Final Clean Share Function (Fixed - removes dropdown completely)
+// Final Clean Share Function (Improved formatting + fixed WhatsApp output)
 function shareResult() {
     const percEl = document.getElementById('currentPerc');
     const detailsEl = document.getElementById('details');
@@ -463,23 +463,27 @@ function shareResult() {
     }
 
     const currentPerc = percEl.innerText;
-    let detailsText = detailsEl.innerText.trim();
+    let detailsText = detailsEl.innerText;
 
-    // Strong cleaning to remove the dropdown line
+    // ✅ Proper cleaning (removes dropdown + keeps formatting)
     detailsText = detailsText
-        .replace(/At\s+\d+\s*5\s*6\s*7\s*8\s*9\s*10\s*classes\/day/gi, '')
-        .replace(/At \d+ classes\/day/gi, '')
-        .replace(/\s+/g, ' ')
+        .replace(/At\s+\d+(\s+\d+)*\s+classes\/day/gi, '')
+        .replace(/At\s+\d+\s+classes\/day/gi, '')
+        .replace(/[ \t]+/g, ' ')
+        .replace(/\n\s*\n/g, '\n\n')
         .trim();
 
     const targetPerc = wantInput ? wantInput + "%" : "Not set";
 
-    // Build clean message with proper line breaks
-    let fullMessage = `🎯 My Attendance Status: ${currentPerc}\n`;
-    fullMessage += `Target: ${targetPerc}\n\n`;
-    fullMessage += `${detailsText}\n\n`;
-    fullMessage += `Calculated using Attendance Planner Pro\n`;
-    fullMessage += window.location.href;
+    // ✅ Clean formatted message (keeps line breaks)
+    let fullMessage = 
+`🎯 My Attendance Status: ${currentPerc}
+Target: ${targetPerc}
+
+${detailsText}
+
+Calculated using Attendance Planner Pro
+${window.location.href}`;
 
     // Share using Web Share API (mobile)
     if (navigator.share) {
