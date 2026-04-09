@@ -1,90 +1,594 @@
-index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Attendance Planner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Planner Pro</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #eef2f3; }
-        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 350px; position: relative; }
-        h2 { text-align: center; color: #333; margin-bottom: 20px; }
-        label { display: block; margin-top: 15px; font-size: 14px; color: #666; }
-        input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 8px; margin-top: 25px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.3s; }
-        button:hover { background: #0056b3; }
-        .result-box { margin-top: 25px; padding: 15px; border-top: 2px solid #eee; }
-        .perc { font-size: 24px; color: #007bff; text-align: center; margin-bottom: 10px; font-weight: bold; }
-        .info { font-size: 16px; color: #444; line-height: 1.6; }
-        .highlight { color: #d9534f; font-weight: bold; }
-        
-        /* Your Signature Style */
+        /* Reset and Base Styles */
+        * { box-sizing: border-box; margin:0; padding:0; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Easter Egg Animation */
+        @keyframes shakeBounce {
+            0% { transform: translateX(0) rotate(0deg); }
+            20% { transform: translateX(-10px) rotate(-5deg); }
+            40% { transform: translateX(10px) rotate(5deg); }
+            60% { transform: translateX(-10px) rotate(-5deg); }
+            80% { transform: translateX(10px) rotate(5deg); }
+            100% { transform: translateX(0) rotate(0deg); }
+        }
+
+        .card.easter-activated {
+            animation: shakeBounce 0.8s ease-in-out;
+            border-color: #ff9800;
+            box-shadow: 0 15px 30px rgba(255, 152, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background: #f0f4f8;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 380px;
+            animation: fadeInUp 0.6s ease-out;
+            position: relative;
+        }
+
+        h2 { text-align: center; color: #333; margin-top: 0; font-size: 24px; }
+
+        label { display: block; margin-top: 15px; font-size: 14px; color: #666; font-weight: 600; }
+
+        .label-with-info {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .label-with-info label { margin-top: 0; }
+
+        .info-btn {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .info-btn:hover { background: #cbd5e0; }
+
+        .help-text {
+            font-size: 12px;
+            color: #718096;
+            background: #f7fafc;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+            display: none;
+            border: 1px dashed #cbd5e0;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus { border-color: #007bff; outline: none; box-shadow: 0 0 5px rgba(0,123,255,0.2); }
+
+        .calc-btn {
+            width: 100%;
+            padding: 14px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .calc-btn:hover { background: #0056b3; transform: scale(1.02); }
+
+        .refresh-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #888;
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: block;
+            text-align: center;
+        }
+
+        .refresh-btn:hover {
+            color: #d9534f;
+            text-decoration: underline;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            border-left: 5px solid #007bff;
+            animation: popIn 0.4s ease-out;
+            display: none;
+        }
+
+        .status-pass { border-left-color: #28a745; background: #f1f9f2; }
+        .status-fail { border-left-color: #d9534f; background: #fdf2f2; }
+
+        .perc { font-size: 28px; text-align: center; margin-bottom: 10px; font-weight: 800; }
+        .info { font-size: 15px; color: #444; line-height: 1.6; }
+        .highlight-red { color: #d9534f; font-weight: bold; }
+        .highlight-green { color: #28a745; font-weight: bold; }
+
+        .inline-select { padding: 2px 5px; border-radius: 4px; border: 1px solid #ccc; }
+
+        /* Bottom Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .history-btn {
+            background: #17a2b8;/*#6c757d*/
+            color: white;
+        }
+
+        .history-btn:hover { background: #5a6268; }
+
+        .share-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .share-btn:hover { background: #218838; }
+
+        /* History Modal */
+        .history-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .history-content {
+            background: white;
+            width: 100%;
+            max-width: 380px;
+            border-radius: 15px;
+            overflow: hidden;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .history-header {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .history-body {
+            padding: 10px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .history-item {
+            background: #f8f9fa;
+            margin: 8px 0;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border-left: 5px solid #007bff;
+        }
+
+        .history-item .delete-item {
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .delete-all-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
         .footer { 
             position: fixed; 
             bottom: 10px; 
-            right: 15px; 
+            width: 100%; 
+            text-align: center; 
             font-size: 10px; 
             color: #999; 
-            letter-spacing: 1px;
+            pointer-events: auto; 
+            cursor: pointer; 
+        }
+
+        /* Confetti pieces */
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background-color: red;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Attendance Calculator</h2>
-    
-    <label>Total classes present:</label>
-    <input type="number" id="present" placeholder="e.g. 45">
-    
-    <label>Total classes:</label>
-    <input type="number" id="total" placeholder="e.g. 60">
-    
-    <label>Attendance percentage you want:</label>
-    <input type="number" id="want" placeholder="e.g. 75">
-    
-    <button onclick="calculate()">Calculate Now</button>
-    
-    <div id="result" class="result-box" style="display:none;">
+    <h2>Attendance Planner</h2>
+
+    <form onsubmit="calculate(); return false;">
+        <label>Total classes present:</label>
+        <input type="number" id="present" placeholder="Ex:45" inputmode="numeric" required>
+
+        <label>Total classes held:</label>
+        <input type="number" id="total" placeholder="Ex:60" inputmode="numeric" required>
+
+        <div class="label-with-info">
+            <label>Target percentage (%):</label>
+            <button type="button" class="info-btn" onclick="toggleHelp()">i</button>
+        </div>
+        <div id="help-target" class="help-text">
+            Enter the percentage you want to maintain.
+        </div>
+        <input type="number" id="want" placeholder="Ex:75" inputmode="numeric" required>
+
+        <button type="submit" class="calc-btn">Calculate Status</button>
+        
+        <button type="button" class="refresh-btn" onclick="resetForm()">
+            ↺ Clear all data
+        </button>
+    </form>
+
+    <div id="result" class="result-box">
         <div id="currentPerc" class="perc"></div>
         <div id="details" class="info"></div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="action-btn history-btn" onclick="showHistory()">📜 History</button>
+        <button class="action-btn share-btn" onclick="shareResult()">🔗 Share</button>
+    </div>
+</div>
+
+<!-- History Modal -->
+<div id="historyModal" class="history-modal">
+    <div class="history-content">
+        <div class="history-header">
+            <span>📋 Calculation History</span>
+            <button onclick="deleteAllHistory()" class="delete-all-btn">🗑️ Delete All</button>
+            <button onclick="closeHistory()" style="background:none;border:none;font-size:20px;cursor:pointer;">×</button>
+        </div>
+        <div id="historyBody" class="history-body">
+            <!-- History items will be injected here by JS -->
+        </div>
     </div>
 </div>
 
 <div class="footer">MADE BY SHARAVAN RAJ</div>
 
 <script>
-    function calculate() {
-        let present = parseFloat(document.getElementById('present').value);
-        let total = parseFloat(document.getElementById('total').value);
-        let want = parseFloat(document.getElementById('want').value);
-        let resBox = document.getElementById('result');
+function toggleHelp() {
+    const helpEl = document.getElementById('help-target');
+    helpEl.style.display = (helpEl.style.display === 'block') ? 'none' : 'block';
+}
 
-        if (isNaN(present) || isNaN(total) || isNaN(want) || total === 0) {
-            alert("Please enter valid numbers!");
-            return;
-        }
+// Save calculation to history
+function saveToHistory(present, total, want, currentPerc) {
+    let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
+    
+    const entry = {
+        present: parseFloat(present),
+        total: parseFloat(total),
+        want: parseFloat(want),
+        currentPerc: parseFloat(currentPerc.toFixed(1)),
+        date: new Date().toLocaleString('en-GB', { 
+            day: '2-digit', 
+            month: '2-digit', 
+            year: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        })
+    };
 
-        let currentResult = (present / total) * 100;
-        resBox.style.display = "block";
-        document.getElementById('currentPerc').innerText = currentResult.toFixed(2) + "%";
+    history.unshift(entry); // Add to top
+    if (history.length > 20) history.pop(); // Limit to 20 entries
+    localStorage.setItem("attendanceHistory", JSON.stringify(history));
+}
 
-        let details = document.getElementById('details');
+// Show History
+function showHistory() {
+    const modal = document.getElementById('historyModal');
+    const body = document.getElementById('historyBody');
+    let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
 
-        if (currentResult >= want) {
-            details.innerHTML = `✅ You are already at or above <span class="highlight">${want}%</span>. Keep it up!`;
-        } else {
-            let needed = Math.ceil((want * total - 100 * present) / (100 - want));
-            let days = (needed / 6).toFixed(1);
-
-            details.innerHTML = `
-                📍 Classes needed: <span class="highlight">${needed}</span><br>
-                📅 Estimated days: <span class="highlight">${days} days</span><br>
-                <small>(Calculated at 6 classes/day)</small>
+    if (history.length === 0) {
+        body.innerHTML = `<p style="text-align:center; color:#888; padding:20px;">No calculation history yet.</p>`;
+    } else {
+        body.innerHTML = '';
+        history.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            div.innerHTML = `
+                <strong>${item.currentPerc}%</strong> <span style="color:#666;">(Target ${item.want}%)</span><br>
+                ${item.present} / ${item.total} classes<br>
+                <small style="color:#888;">${item.date}</small>
+                <button class="delete-item" onclick="deleteHistoryItem(${index}); event.stopImmediatePropagation();">🗑</button>
             `;
-        }
+            body.appendChild(div);
+        });
     }
+    modal.style.display = 'flex';
+}
+
+// Close History
+function closeHistory() {
+    document.getElementById('historyModal').style.display = 'none';
+}
+
+// Delete single history item
+function deleteHistoryItem(index) {
+    let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
+    history.splice(index, 1);
+    localStorage.setItem("attendanceHistory", JSON.stringify(history));
+    showHistory(); // Refresh
+}
+
+// Delete All History
+function deleteAllHistory() {
+    if (confirm("Delete all calculation history?")) {
+        localStorage.removeItem("attendanceHistory");
+        showHistory();
+    }
+}
+
+// Updated Share Function - Now shares the webpage link
+function shareResult() {
+    const percEl = document.getElementById('currentPerc');
+    const detailsEl = document.getElementById('details');
+    
+    if (!percEl || percEl.innerText.trim() === "") {
+        alert("Please calculate your attendance first before sharing!");
+        return;
+    }
+
+    const currentPerc = percEl.innerText;
+    const detailsText = detailsEl.innerText.trim();
+
+    const shareText = `🎯 My Attendance Status: ${currentPerc}\n${detailsText}\n\n`;
+
+    const pageUrl = window.location.href;
+
+    const fullMessage = `${shareText}Calculated using Attendance Planner Pro\n${pageUrl}`;
+
+    // Use Web Share API if available (mobile-friendly)
+    if (navigator.share) {
+        navigator.share({
+            title: 'Attendance Planner Pro',
+            text: fullMessage,
+            url: pageUrl
+        }).catch(err => {
+            console.log("Share cancelled or failed", err);
+        });
+    } 
+    // Fallback: Copy to clipboard for desktop
+    else {
+        navigator.clipboard.writeText(fullMessage).then(() => {
+            alert("✅ Attendance result + webpage link copied to clipboard!\nYou can now paste it anywhere.");
+        }).catch(() => {
+            alert("Failed to copy. Please try again.");
+        });
+    }
+}
+
+// Function to reset the form and clear storage
+function resetForm() {
+    document.getElementById('present').value = '';
+    document.getElementById('total').value = '';
+    document.getElementById('want').value = '';
+    document.getElementById('result').style.display = 'none';
+    localStorage.removeItem("attendanceData");
+    console.log("Storage cleared.");
+}
+
+// Auto-save input values
+function saveData(present, total, want) {
+    localStorage.setItem("attendanceData", JSON.stringify({ present, total, want }));
+}
+
+function calculate() {
+    let present = parseFloat(document.getElementById('present').value);
+    let total = parseFloat(document.getElementById('total').value);
+    let want = parseFloat(document.getElementById('want').value);
+    let resBox = document.getElementById('result');
+    let details = document.getElementById('details');
+    let currentPercText = document.getElementById('currentPerc');
+
+    if (isNaN(present) || isNaN(total) || isNaN(want) || total <= 0 || present < 0 || want <= 0 || want >= 100) {
+        alert("Please enter valid numbers (Target: 1-99%)");
+        return;
+    }
+    
+    if (present > total) {
+        alert("Present classes cannot exceed total classes!");
+        return;
+    }
+
+    saveData(present, total, want);
+
+    let currentResult = (present / total) * 100;
+    resBox.style.display = "block";
+    resBox.classList.remove('status-pass', 'status-fail'); 
+    currentPercText.innerText = currentResult.toFixed(1) + "%";
+
+    if (currentResult >= want) {
+        let canMiss = Math.max(0, Math.floor((100 * present / want) - total));
+        resBox.classList.add('status-pass');
+        currentPercText.style.color = "#28a745";
+        details.innerHTML = `
+            <span class="highlight-green">✅ Above Target!</span><br>
+            You can safely miss <span class="highlight-green">${canMiss}</span> more classes while staying above ${want}%.
+        `;
+    } else {
+        let classesPerDay = document.getElementById('classRate') ? parseInt(document.getElementById('classRate').value) : 6;
+        let needed = Math.ceil((want * total - 100 * present) / (100 - want));
+        needed = Math.max(0, needed);
+        let days = (needed / classesPerDay).toFixed(1);
+
+        resBox.classList.add('status-fail');
+        currentPercText.style.color = "#d9534f";
+        details.innerHTML = `
+            <span class="highlight-red">❌ Below Target!</span><br>
+            📍 Classes needed: <span class="highlight-red">${needed}</span><br>
+            📅 Estimated days: <span class="highlight-red">${days} days</span> 
+            <br>
+            <span style="font-size: 14px; color: #888;">
+                At 
+                <select id="classRate" class="inline-select" onchange="calculate()">
+                    <option value="5" ${classesPerDay == 5 ? 'selected' : ''}>5</option>
+                    <option value="6" ${classesPerDay == 6 ? 'selected' : ''}>6</option>
+                    <option value="7" ${classesPerDay == 7 ? 'selected' : ''}>7</option>
+                    <option value="8" ${classesPerDay == 8 ? 'selected' : ''}>8</option>
+                    <option value="9" ${classesPerDay == 9 ? 'selected' : ''}>9</option>
+                    <option value="10" ${classesPerDay == 10 ? 'selected' : ''}>10</option>
+                </select> 
+                classes/day
+            </span>
+        `;
+    }
+
+    // Save to history after successful calculation
+    saveToHistory(present, total, want, currentResult);
+}
+
+// Confetti animation optimized
+function spawnConfetti(count = 50) {
+    const colors = ["#ff4d4d", "#4dff88", "#4db8ff", "#ffd24d", "#b84dff"];
+    for (let i = 0; i < count; i++) {
+        let confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+        confetti.style.left = Math.random()*window.innerWidth + 'px';
+        confetti.style.top = '-10px';
+        confetti.style.width = confetti.style.height = (Math.random()*6+4) + 'px';
+        document.body.appendChild(confetti);
+
+        confetti.animate([
+            { transform: `translateY(0) rotate(0deg)`, opacity:1 },
+            { transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random()*720}deg)`, opacity:0 }
+        ], {
+            duration: 2000 + Math.random()*1000,
+            easing: 'ease-out'
+        }).onfinish = () => confetti.remove();
+    }
+}
+
+// Footer easter egg
+let clicks = 0;
+document.querySelector(".footer").addEventListener("click", () => {
+    clicks++;
+    if (clicks === 5) {
+        const card = document.querySelector(".card");
+        card.classList.add("easter-activated");
+        setTimeout(() => card.classList.remove("easter-activated"), 900);
+        spawnConfetti(50);
+        console.log("🎉 Developer Mode Activated — Sharavan Raj was here!");
+        clicks = 0;
+    }
+});
+
+// Load saved values
+window.onload = function() {
+    let saved = localStorage.getItem("attendanceData");
+    if (saved) {
+        let data = JSON.parse(saved);
+        document.getElementById("present").value = data.present;
+        document.getElementById("total").value = data.total;
+        document.getElementById("want").value = data.want;
+    }
+};
 </script>
-
 </body>
-
 </html>
