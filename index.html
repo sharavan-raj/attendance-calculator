@@ -451,7 +451,7 @@ function deleteAllHistory() {
     }
 }
 
-// Improved Share Function - Now includes Target %
+// Clean Share Function - Now properly removes dropdown and formats nicely
 function shareResult() {
     const percEl = document.getElementById('currentPerc');
     const detailsEl = document.getElementById('details');
@@ -465,30 +465,33 @@ function shareResult() {
     const currentPerc = percEl.innerText;
     let detailsText = detailsEl.innerText.trim();
 
-    // Clean up details (remove dropdown text)
-    detailsText = detailsText.replace(/At \d+[\s\d]*classes\/day/gi, '')
-                             .replace(/\s+/g, ' ')
-                             .trim();
+    // Better cleaning - remove the entire "At 5 6 7 8 9 10 classes/day" line
+    detailsText = detailsText
+        .replace(/At \d+\s*5\s*6\s*7\s*8\s*9\s*10 classes\/day/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim();
 
     const targetPerc = wantInput ? wantInput + "%" : "Not set";
 
-    const shareText = `🎯 My Attendance Status: ${currentPerc}\n` +
-                      `Target: ${targetPerc}\n\n` +
-                      `${detailsText}\n\n`;
+    // Create clean formatted message
+    let fullMessage = `🎯 My Attendance Status: ${currentPerc}\n`;
+    fullMessage += `Target: ${targetPerc}\n\n`;
+    fullMessage += `${detailsText}\n\n`;
+    fullMessage += `Calculated using Attendance Planner Pro\n`;
+    fullMessage += `${window.location.href}`;
 
-    const pageUrl = window.location.href;
-
-    const fullMessage = `${shareText}Calculated using Attendance Planner Pro\n${pageUrl}`;
-
+    // Use Web Share API if available
     if (navigator.share) {
         navigator.share({
             title: 'Attendance Planner Pro',
             text: fullMessage,
-            url: pageUrl
+            url: window.location.href
         }).catch(() => {});
-    } else {
+    } 
+    // Fallback for desktop browsers
+    else {
         navigator.clipboard.writeText(fullMessage).then(() => {
-            alert("✅ Clean result with Target copied to clipboard!\nReady to share.");
+            alert("✅ Clean result copied to clipboard!");
         }).catch(() => {
             alert("Failed to copy. Please try again.");
         });
