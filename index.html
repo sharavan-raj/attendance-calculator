@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Planner Pro</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#007bff">
     <style>
         /* Reset and Base Styles */
         * { box-sizing: border-box; margin:0; padding:0; }
@@ -385,10 +383,10 @@
         </button>
     </form>
 
-    <div id="result" class="result-box">
-        <div id="currentPerc" class="perc"></div>
-        <div id="details" class="info"></div>
-    </div>
+    <!-- Install Button Added Here -->
+    <button id="installBtn" class="action-btn" style="display:none; background:#ff9800; color:white; margin-top:10px;">
+        📲 Install App
+    </button>
 
     <div class="action-buttons">
         <button class="action-btn history-btn" onclick="showHistory()">📜 History</button>
@@ -467,7 +465,6 @@ function showHistory() {
     }
 
     modal.style.display = 'flex';
-    // Push a dummy state so the back button has something to "go back" from
     window.history.pushState({ modalOpen: true }, "");
 }
 
@@ -475,14 +472,11 @@ function closeHistory() {
     const modal = document.getElementById('historyModal');
     modal.style.display = 'none';
     
-    // If the modal was closed via 'X' or clicking outside, 
-    // we go back in history to remove the dummy state we pushed.
     if (window.history.state && window.history.state.modalOpen) {
         window.history.back();
     }
 }
 
-// 1. Close modal when clicking anywhere outside the white box
 window.onclick = function(event) {
     const modal = document.getElementById('historyModal');
     if (event.target == modal) {
@@ -490,10 +484,8 @@ window.onclick = function(event) {
     }
 }
 
-// 2. Handle the Browser/Phone Back Button
 window.onpopstate = function(event) {
     const modal = document.getElementById('historyModal');
-    // If user hits back, just hide the modal (don't call closeHistory or you'll loop)
     if (modal) {
         modal.style.display = 'none';
     }
@@ -526,13 +518,9 @@ function shareResult() {
     const currentPerc = percEl.innerText;
     let detailsText = detailsEl.innerText;
 
-    // --- FIX STARTS HERE ---
-    // If we are below target, the "Assuming..." block exists. 
-    // We want to strip everything from "Assuming" onwards.
     if (detailsText.includes("Assuming")) {
         detailsText = detailsText.split("Assuming")[0].trim();
     }
-    // --- FIX ENDS HERE ---
 
     const targetPerc = wantInput ? wantInput + "%" : "Not set";
 
@@ -669,6 +657,41 @@ document.querySelector(".footer").addEventListener("click", () => {
     }
 });
 
+// ==================== PWA INSTALL BUTTON CODE ====================
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+
+// Capture install event
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // Show the Install App button
+    installBtn.style.display = "block";
+});
+
+// When user clicks install button
+installBtn.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+
+    const choice = await deferredPrompt.userChoice;
+
+    if (choice.outcome === "accepted") {
+        console.log("App Installed 🎉");
+    }
+
+    deferredPrompt = null;
+    installBtn.style.display = "none";
+});
+
+// Hide button after install
+window.addEventListener("appinstalled", () => {
+    installBtn.style.display = "none";
+});
+// ==================== PWA INSTALL BUTTON CODE END ====================
+
 window.onload = function() {
     let saved = localStorage.getItem("attendanceData");
     if (saved) {
@@ -678,11 +701,6 @@ window.onload = function() {
         document.getElementById("want").value = data.want || '';
     }
 };
-    if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js")
-    .then(() => console.log("PWA Ready ✅"))
-    .catch(err => console.log("Error:", err));
-}
 </script>
 </body>
 </html>
