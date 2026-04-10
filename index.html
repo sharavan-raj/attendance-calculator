@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Planner Pro</title>
     
-    <!-- PWA Manifest Link - Added Here -->
+    <!-- PWA Manifest Link -->
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -660,6 +660,7 @@ document.querySelector(".footer").addEventListener("click", () => {
     }
 });
 
+// ==================== PWA INSTALL BUTTON CODE ====================
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 
@@ -687,7 +688,23 @@ installBtn.addEventListener("click", async () => {
 window.addEventListener("appinstalled", () => {
     installBtn.style.display = "none";
 });
+// ==================== PWA INSTALL BUTTON CODE END ====================
 
+// ==================== SERVICE WORKER REGISTRATION ====================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then((registration) => {
+        console.log('Service Worker registered successfully:', registration.scope);
+      })
+      .catch((error) => {
+        console.log('Service Worker registration failed:', error);
+      });
+  });
+}
+// ==================== SERVICE WORKER REGISTRATION END ====================
+
+// Original window.onload
 window.onload = function() {
     let saved = localStorage.getItem("attendanceData");
     if (saved) {
