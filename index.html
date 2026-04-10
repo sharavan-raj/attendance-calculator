@@ -660,64 +660,103 @@ document.querySelector(".footer").addEventListener("click", () => {
     }
 });
 
-// ==================== IMPROVED MOBILE INSTALL EXPERIENCE ====================
+// ==================== CLEAN INSTALL POPUP FOR PHONES ====================
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 
-// Create a clear mobile-friendly install message
-const mobileInstallHint = document.createElement("div");
-mobileInstallHint.style.cssText = `
-    margin: 15px 0 10px 0;
-    padding: 14px;
-    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-    border: 2px solid #ffc107;
-    border-radius: 12px;
-    font-size: 15px;
-    color: #856404;
-    text-align: center;
-    line-height: 1.5;
-    display: none;
-`;
-mobileInstallHint.innerHTML = `
-    📲 <strong>How to install:</strong><br>
-    Tap the <strong>⋮ three dots</strong> at the top right → <strong>"Install app"</strong>
-`;
+let installPopup = null;
 
-installBtn.parentNode.insertBefore(mobileInstallHint, installBtn.nextSibling);
+// Create beautiful install popup
+function createInstallPopup() {
+    installPopup = document.createElement("div");
+    installPopup.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        max-width: 320px;
+        width: 90%;
+        text-align: center;
+        z-index: 9999;
+        display: none;
+        border: 1px solid #ddd;
+    `;
 
+    installPopup.innerHTML = `
+        <h3 style="margin: 0 0 15px 0; color: #007bff;">📲 Install Attendance Planner</h3>
+        <p style="margin: 0 0 20px 0; color: #555; font-size: 15px;">
+            Get the app on your home screen for quick access — works offline too!
+        </p>
+        <button id="popupInstallBtn" style="
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 14px 30px; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 10px;
+        ">Install App</button>
+        
+        <button id="popupCloseBtn" style="
+            background: transparent; 
+            color: #666; 
+            border: 1px solid #ccc; 
+            padding: 12px 30px; 
+            border-radius: 10px; 
+            font-size: 15px;
+            width: 100%;
+        ">Maybe Later</button>
+    `;
+
+    document.body.appendChild(installPopup);
+
+    // Install button in popup
+    document.getElementById("popupInstallBtn").addEventListener("click", async () => {
+        if (!deferredPrompt) return;
+        installPopup.style.display = "none";
+        deferredPrompt.prompt();
+
+        const choice = await deferredPrompt.userChoice;
+        console.log("Install choice:", choice.outcome);
+        deferredPrompt = null;
+    });
+
+    // Close button
+    document.getElementById("popupCloseBtn").addEventListener("click", () => {
+        installPopup.style.display = "none";
+    });
+}
+
+// Main beforeinstallprompt handler
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
     installBtn.style.display = "block";
-    mobileInstallHint.style.display = "none";   // Hide hint when button appears
-    console.log("✅ Install prompt available - showing button");
+    console.log("✅ Install prompt available");
 });
 
-installBtn.addEventListener("click", async () => {
-    if (!deferredPrompt) return;
-    installBtn.style.display = "none";
-    deferredPrompt.prompt();
+// Show popup if button doesn't appear (especially useful on phones)
+setTimeout(() => {
+    if (installBtn.style.display !== "block" && !deferredPrompt) {
+        if (!installPopup) createInstallPopup();
+        installPopup.style.display = "block";
+        console.log("📱 Showing install popup for mobile");
+    }
+}, 4500);  // Show after 4.5 seconds
 
-    const choice = await deferredPrompt.userChoice;
-    console.log("Install choice:", choice.outcome);
-
-    deferredPrompt = null;
-});
-
+// Hide popup when app is installed
 window.addEventListener("appinstalled", () => {
     installBtn.style.display = "none";
-    mobileInstallHint.style.display = "none";
+    if (installPopup) installPopup.style.display = "none";
     console.log("🎉 App installed successfully!");
 });
-
-// Show mobile hint after 4 seconds if button still not visible
-setTimeout(() => {
-    if (installBtn.style.display !== "block") {
-        mobileInstallHint.style.display = "block";
-        console.log("📱 Showing mobile install instructions");
-    }
-}, 4000);
-// ==================== IMPROVED MOBILE INSTALL CODE END ====================
+// ==================== CLEAN INSTALL POPUP END ====================
 
 // ==================== SERVICE WORKER REGISTRATION ====================
 if ('serviceWorker' in navigator) {
