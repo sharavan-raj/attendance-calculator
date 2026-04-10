@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Planner Pro</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007bff">
     <style>
         /* Reset and Base Styles */
         * { box-sizing: border-box; margin:0; padding:0; }
@@ -676,6 +678,11 @@ window.onload = function() {
         document.getElementById("want").value = data.want || '';
     }
 };
+    if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+    .then(() => console.log("PWA Ready ✅"))
+    .catch(err => console.log("Error:", err));
+}
 </script>
 </body>
 </html>
