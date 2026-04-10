@@ -1,7 +1,7 @@
 {
   "name": "Attendance Planner Pro",
   "short_name": "Attendance",
-  "start_url": "./index.html",
+  "start_url": "./"
   "display": "standalone",
   "background_color": "#f0f4f8",
   "theme_color": "#007bff",
