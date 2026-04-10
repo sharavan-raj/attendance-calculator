@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Planner Pro</title>
+    
+    <!-- PWA Manifest Link - Added Here -->
+    <link rel="manifest" href="manifest.json">
+
     <style>
         /* Reset and Base Styles */
         * { box-sizing: border-box; margin:0; padding:0; }
@@ -383,7 +387,6 @@
         </button>
     </form>
 
-    <!-- Install Button Added Here -->
     <button id="installBtn" class="action-btn" style="display:none; background:#ff9800; color:white; margin-top:10px;">
         📲 Install App
     </button>
@@ -657,20 +660,15 @@ document.querySelector(".footer").addEventListener("click", () => {
     }
 });
 
-// ==================== PWA INSTALL BUTTON CODE ====================
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 
-// Capture install event
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
-
-    // Show the Install App button
     installBtn.style.display = "block";
 });
 
-// When user clicks install button
 installBtn.addEventListener("click", async () => {
     if (!deferredPrompt) return;
 
@@ -686,11 +684,9 @@ installBtn.addEventListener("click", async () => {
     installBtn.style.display = "none";
 });
 
-// Hide button after install
 window.addEventListener("appinstalled", () => {
     installBtn.style.display = "none";
 });
-// ==================== PWA INSTALL BUTTON CODE END ====================
 
 window.onload = function() {
     let saved = localStorage.getItem("attendanceData");
