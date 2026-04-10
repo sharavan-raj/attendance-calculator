@@ -660,35 +660,64 @@ document.querySelector(".footer").addEventListener("click", () => {
     }
 });
 
-// ==================== PWA INSTALL BUTTON CODE ====================
+// ==================== IMPROVED MOBILE INSTALL EXPERIENCE ====================
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
+
+// Create a clear mobile-friendly install message
+const mobileInstallHint = document.createElement("div");
+mobileInstallHint.style.cssText = `
+    margin: 15px 0 10px 0;
+    padding: 14px;
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    border: 2px solid #ffc107;
+    border-radius: 12px;
+    font-size: 15px;
+    color: #856404;
+    text-align: center;
+    line-height: 1.5;
+    display: none;
+`;
+mobileInstallHint.innerHTML = `
+    📲 <strong>How to install:</strong><br>
+    Tap the <strong>⋮ three dots</strong> at the top right → <strong>"Install app"</strong>
+`;
+
+installBtn.parentNode.insertBefore(mobileInstallHint, installBtn.nextSibling);
 
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
     installBtn.style.display = "block";
+    mobileInstallHint.style.display = "none";   // Hide hint when button appears
+    console.log("✅ Install prompt available - showing button");
 });
 
 installBtn.addEventListener("click", async () => {
     if (!deferredPrompt) return;
-
+    installBtn.style.display = "none";
     deferredPrompt.prompt();
 
     const choice = await deferredPrompt.userChoice;
-
-    if (choice.outcome === "accepted") {
-        console.log("App Installed 🎉");
-    }
+    console.log("Install choice:", choice.outcome);
 
     deferredPrompt = null;
-    installBtn.style.display = "none";
 });
 
 window.addEventListener("appinstalled", () => {
     installBtn.style.display = "none";
+    mobileInstallHint.style.display = "none";
+    console.log("🎉 App installed successfully!");
 });
-// ==================== PWA INSTALL BUTTON CODE END ====================
+
+// Show mobile hint after 4 seconds if button still not visible
+setTimeout(() => {
+    if (installBtn.style.display !== "block") {
+        mobileInstallHint.style.display = "block";
+        console.log("📱 Showing mobile install instructions");
+    }
+}, 4000);
+// ==================== IMPROVED MOBILE INSTALL CODE END ====================
 
 // ==================== SERVICE WORKER REGISTRATION ====================
 if ('serviceWorker' in navigator) {
