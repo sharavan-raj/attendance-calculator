@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Planner Pro</title>
-    
-    <!-- PWA Manifest Link -->
-    <link rel="manifest" href="manifest.json">
-
+    <link rel="icon" href="icon.png" type="image/png">
     <style>
         /* Reset and Base Styles */
-        * { box-sizing: border-box; margin:0; padding:0; }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -40,6 +41,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -58,12 +60,23 @@
             width: 100%;
             max-width: 380px;
             animation: fadeInUp 0.6s ease-out;
-            position: relative;
+            margin-bottom: 25px;
         }
 
-        h2 { text-align: center; color: #333; margin-top: 0; font-size: 24px; }
+        h2 { 
+            text-align: center; 
+            color: #333; 
+            margin-top: 0; 
+            font-size: 24px; 
+        }
 
-        label { display: block; margin-top: 15px; font-size: 14px; color: #666; font-weight: 600; }
+        label { 
+            display: block; 
+            margin-top: 15px; 
+            font-size: 14px; 
+            color: #666; 
+            font-weight: 600; 
+        }
 
         .label-with-info {
             display: flex;
@@ -71,7 +84,9 @@
             margin-top: 15px;
         }
 
-        .label-with-info label { margin-top: 0; }
+        .label-with-info label { 
+            margin-top: 0; 
+        }
 
         .info-btn {
             background: #e2e8f0;
@@ -90,7 +105,9 @@
             transition: background 0.2s;
         }
 
-        .info-btn:hover { background: #cbd5e0; }
+        .info-btn:hover { 
+            background: #cbd5e0; 
+        }
 
         .help-text {
             font-size: 12px;
@@ -144,7 +161,11 @@
             transition: all 0.3s ease;
         }
 
-        input:focus { border-color: #007bff; outline: none; box-shadow: 0 0 5px rgba(0,123,255,0.2); }
+        input:focus { 
+            border-color: #007bff; 
+            outline: none; 
+            box-shadow: 0 0 5px rgba(0,123,255,0.2); 
+        }
 
         .calc-btn {
             width: 100%;
@@ -160,7 +181,10 @@
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .calc-btn:hover { background: #0056b3; transform: scale(1.02); }
+        .calc-btn:hover { 
+            background: #0056b3; 
+            transform: scale(1.02); 
+        }
 
         .refresh-btn {
             width: 100%;
@@ -192,15 +216,44 @@
             display: none;
         }
 
-        .status-pass { border-left-color: #28a745; background: #f1f9f2; }
-        .status-fail { border-left-color: #d9534f; background: #fdf2f2; }
+        .status-pass { 
+            border-left-color: #28a745; 
+            background: #f1f9f2; 
+        }
+        
+        .status-fail { 
+            border-left-color: #d9534f; 
+            background: #fdf2f2; 
+        }
 
-        .perc { font-size: 28px; text-align: center; margin-bottom: 10px; font-weight: 800; }
-        .info { font-size: 15px; color: #444; line-height: 1.6; }
-        .highlight-red { color: #d9534f; font-weight: bold; }
-        .highlight-green { color: #28a745; font-weight: bold; }
+        .perc { 
+            font-size: 28px; 
+            text-align: center; 
+            margin-bottom: 10px; 
+            font-weight: 800; 
+        }
+        
+        .info { 
+            font-size: 15px; 
+            color: #444; 
+            line-height: 1.6; 
+        }
+        
+        .highlight-red { 
+            color: #d9534f; 
+            font-weight: bold; 
+        }
+        
+        .highlight-green { 
+            color: #28a745; 
+            font-weight: bold; 
+        }
 
-        .inline-select { padding: 2px 5px; border-radius: 4px; border: 1px solid #ccc; }
+        .inline-select { 
+            padding: 2px 5px; 
+            border-radius: 4px; 
+            border: 1px solid #ccc; 
+        }
 
         .action-buttons {
             display: flex;
@@ -234,13 +287,43 @@
             color: white;
         }
 
-        .share-btn:hover { background: #218838; }
+        .share-btn:hover { 
+            background: #218838; 
+        }
+
+        /* Footer Styles - Placed under the card */
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            width: 100%;
+            max-width: 380px;
+            line-height: 1.6;
+        }
+
+        .footer .made-by {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .footer .visitor-count {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .footer .visitor-count strong {
+            color: #007bff;
+            font-family: monospace;
+        }
 
         /* History Modal */
         .history-modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
             background: rgba(0,0,0,0.6);
             z-index: 1000;
             align-items: center;
@@ -327,18 +410,7 @@
             transform: scale(1.1);
         }
 
-        .footer { 
-            position: fixed; 
-            bottom: 10px; 
-            width: 100%; 
-            text-align: center; 
-            font-size: 10px; 
-            color: #999; 
-            pointer-events: auto; 
-            cursor: pointer; 
-        }
-
-        /* Confetti pieces */
+        /* Confetti */
         .confetti {
             position: fixed;
             width: 8px;
@@ -353,7 +425,7 @@
 <body>
 
 <div class="card">
-    <h2>Attendance Planner</h2>
+    <h2>Attendance Planner Pro</h2>
 
     <form onsubmit="calculate(); return false;">
         <label>Total classes present:</label>
@@ -387,9 +459,10 @@
         </button>
     </form>
 
-    <button id="installBtn" class="action-btn" style="display:none; background:#ff9800; color:white; margin-top:10px;">
-        📲 Install App
-    </button>
+    <div id="result" class="result-box">
+        <div id="currentPerc" class="perc"></div>
+        <div id="details" class="info"></div>
+    </div>
 
     <div class="action-buttons">
         <button class="action-btn history-btn" onclick="showHistory()">📜 History</button>
@@ -397,6 +470,15 @@
     </div>
 </div>
 
+<!-- Footer placed under the card -->
+<div class="footer">
+    <div class="made-by">MADE BY SHARAVAN RAJ</div>
+    <div class="visitor-count">
+        👀 Visitors: <strong id="visitCount">0</strong>
+    </div>
+</div>
+
+<!-- History Modal -->
 <div id="historyModal" class="history-modal">
     <div class="history-content">
         <div class="history-header">
@@ -406,128 +488,128 @@
                 <button onclick="closeHistory()" class="close-modal-btn">✕</button>
             </div>
         </div>
-        <div id="historyBody" class="history-body">
-            </div>
+        <div id="historyBody" class="history-body"></div>
     </div>
 </div>
 
-<div class="footer">MADE BY SHARAVAN RAJ</div>
-
 <script>
-function toggleHelp() {
-    const helpEl = document.getElementById('help-target');
-    helpEl.style.display = (helpEl.style.display === 'block') ? 'none' : 'block';
-}
+    // ====================== HELPER FUNCTIONS ======================
+    function toggleHelp() {
+        const helpEl = document.getElementById('help-target');
+        helpEl.style.display = (helpEl.style.display === 'block') ? 'none' : 'block';
+    }
 
-function setTarget(percent) {
-    document.getElementById('want').value = percent;
-}
+    function setTarget(percent) {
+        document.getElementById('want').value = percent;
+    }
 
-function saveToHistory(present, total, want, currentPerc) {
-    let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
-    
-    const entry = {
-        present: parseFloat(present),
-        total: parseFloat(total),
-        want: parseFloat(want),
-        currentPerc: parseFloat(currentPerc.toFixed(1)),
-        date: new Date().toLocaleString('en-GB', { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        })
+    // ====================== HISTORY FUNCTIONS ======================
+    function saveToHistory(present, total, want, currentPerc) {
+        let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
+        
+        const entry = {
+            present: parseFloat(present),
+            total: parseFloat(total),
+            want: parseFloat(want),
+            currentPerc: parseFloat(currentPerc.toFixed(1)),
+            date: new Date().toLocaleString('en-GB', { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            })
+        };
+
+        history.unshift(entry);
+        if (history.length > 20) history.pop();
+        localStorage.setItem("attendanceHistory", JSON.stringify(history));
+    }
+
+    function showHistory() {
+        const modal = document.getElementById('historyModal');
+        const body = document.getElementById('historyBody');
+        let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
+
+        if (history.length === 0) {
+            body.innerHTML = `<p style="text-align:center; color:#888; padding:20px;">No calculation history yet.</p>`;
+        } else {
+            body.innerHTML = '';
+            history.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.innerHTML = `
+                    <strong>${item.currentPerc}%</strong> <span style="color:#666;">(Target ${item.want}%)</span><br>
+                    ${item.present} / ${item.total} classes<br>
+                    <small style="color:#888;">${item.date}</small>
+                    <button class="delete-item" onclick="deleteHistoryItem(${index}); event.stopImmediatePropagation();">🗑</button>
+                `;
+                body.appendChild(div);
+            });
+        }
+
+        modal.style.display = 'flex';
+        window.history.pushState({ modalOpen: true }, "");
+    }
+
+    function closeHistory() {
+        const modal = document.getElementById('historyModal');
+        modal.style.display = 'none';
+        
+        if (window.history.state && window.history.state.modalOpen) {
+            window.history.back();
+        }
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('historyModal');
+        if (event.target == modal) {
+            closeHistory();
+        }
     };
 
-    history.unshift(entry);
-    if (history.length > 20) history.pop();
-    localStorage.setItem("attendanceHistory", JSON.stringify(history));
-}
+    window.onpopstate = function() {
+        const modal = document.getElementById('historyModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    };
 
-function showHistory() {
-    const modal = document.getElementById('historyModal');
-    const body = document.getElementById('historyBody');
-    let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
-
-    if (history.length === 0) {
-        body.innerHTML = `<p style="text-align:center; color:#888; padding:20px;">No calculation history yet.</p>`;
-    } else {
-        body.innerHTML = '';
-        history.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'history-item';
-            div.innerHTML = `
-                <strong>${item.currentPerc}%</strong> <span style="color:#666;">(Target ${item.want}%)</span><br>
-                ${item.present} / ${item.total} classes<br>
-                <small style="color:#888;">${item.date}</small>
-                <button class="delete-item" onclick="deleteHistoryItem(${index}); event.stopImmediatePropagation();">🗑</button>
-            `;
-            body.appendChild(div);
-        });
-    }
-
-    modal.style.display = 'flex';
-    window.history.pushState({ modalOpen: true }, "");
-}
-
-function closeHistory() {
-    const modal = document.getElementById('historyModal');
-    modal.style.display = 'none';
-    
-    if (window.history.state && window.history.state.modalOpen) {
-        window.history.back();
-    }
-}
-
-window.onclick = function(event) {
-    const modal = document.getElementById('historyModal');
-    if (event.target == modal) {
-        closeHistory();
-    }
-}
-
-window.onpopstate = function(event) {
-    const modal = document.getElementById('historyModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-};
-
-function deleteHistoryItem(index) {
-    let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
-    history.splice(index, 1);
-    localStorage.setItem("attendanceHistory", JSON.stringify(history));
-    showHistory();
-}
-
-function deleteAllHistory() {
-    if (confirm("Delete all calculation history?")) {
-        localStorage.removeItem("attendanceHistory");
+    function deleteHistoryItem(index) {
+        let history = JSON.parse(localStorage.getItem("attendanceHistory") || "[]");
+        history.splice(index, 1);
+        localStorage.setItem("attendanceHistory", JSON.stringify(history));
         showHistory();
     }
-}
 
-function shareResult() {
-    const percEl = document.getElementById('currentPerc');
-    const detailsEl = document.getElementById('details');
-    const wantInput = document.getElementById('want').value;
-    
-    if (!percEl || percEl.innerText.trim() === "") {
-        alert("Please calculate your attendance first before sharing!");
-        return;
+    function deleteAllHistory() {
+        if (confirm("Delete all calculation history?")) {
+            localStorage.removeItem("attendanceHistory");
+            showHistory();
+        }
     }
 
-    const currentPerc = percEl.innerText;
-    let detailsText = detailsEl.innerText;
+    // ====================== SHARE FUNCTION ======================
+    function shareResult() {
+        const percEl = document.getElementById('currentPerc');
+        const detailsEl = document.getElementById('details');
+        const wantInput = document.getElementById('want').value;
+        
+        if (!percEl || percEl.innerText.trim() === "") {
+            alert("Please calculate your attendance first before sharing!");
+            return;
+        }
 
-    if (detailsText.includes("Assuming")) {
-        detailsText = detailsText.split("Assuming")[0].trim();
-    }
+        const currentPerc = percEl.innerText;
+        let detailsText = detailsEl.innerText;
 
-    const targetPerc = wantInput ? wantInput + "%" : "Not set";
+        if (detailsText.includes("Assuming")) {
+            detailsText = detailsText.split("Assuming")[0].trim();
+        }
 
-    let fullMessage = 
+        const targetPerc = wantInput ? wantInput + "%" : "Not set";
+
+        let fullMessage = 
 `🎯 My Attendance Status: ${currentPerc}
 Target: ${targetPerc}
 
@@ -536,252 +618,166 @@ ${detailsText}
 Calculated using Attendance Planner Pro
 ${window.location.href}`;
 
-    if (navigator.share) {
-        navigator.share({
-            title: 'Attendance Planner Pro',
-            text: fullMessage,
-            url: window.location.href
-        }).catch(() => {});
-    } else {
-        navigator.clipboard.writeText(fullMessage).then(() => {
-            alert("✅ Clean result copied to clipboard!");
-        }).catch(() => {
-            alert("Failed to copy. Please try again.");
-        });
-    }
-}
-
-function resetForm() {
-    document.getElementById('present').value = '';
-    document.getElementById('total').value = '';
-    document.getElementById('want').value = '';
-    document.getElementById('result').style.display = 'none';
-    localStorage.removeItem("attendanceData");
-}
-
-function saveData(present, total, want) {
-    localStorage.setItem("attendanceData", JSON.stringify({ present, total, want }));
-}
-    
-function calculate() {
-    let present = parseFloat(document.getElementById('present').value);
-    let total = parseFloat(document.getElementById('total').value);
-    let want = parseFloat(document.getElementById('want').value);
-    let resBox = document.getElementById('result');
-    let details = document.getElementById('details');
-    let currentPercText = document.getElementById('currentPerc');
-
-    if (isNaN(present) || isNaN(total) || isNaN(want) || total <= 0 || present < 0 || want <= 0 || want >= 100) {
-        alert("Please enter valid numbers (Target: 1-99%)");
-        return;
-    }
-    
-    if (present > total) {
-        alert("Present classes cannot exceed total classes!");
-        return;
+        if (navigator.share) {
+            navigator.share({
+                title: 'Attendance Planner Pro',
+                text: fullMessage,
+                url: window.location.href
+            }).catch(() => {});
+        } else {
+            navigator.clipboard.writeText(fullMessage).then(() => {
+                alert("✅ Clean result copied to clipboard!");
+            }).catch(() => {
+                alert("Failed to copy. Please try again.");
+            });
+        }
     }
 
-    saveData(present, total, want);
-
-    let currentResult = (present / total) * 100;
-    resBox.style.display = "block";
-    resBox.classList.remove('status-pass', 'status-fail'); 
-    currentPercText.innerText = currentResult.toFixed(1) + "%";
-
-    if (currentResult >= want) {
-        let canMiss = Math.max(0, Math.floor((100 * present / want) - total));
-        resBox.classList.add('status-pass');
-        currentPercText.style.color = "#28a745";
-        details.innerHTML = `
-            <span class="highlight-green">✅ Above Target!</span><br>
-            You can safely miss <span class="highlight-green">${canMiss}</span> more classes while staying above ${want}%.
-        `;
-    } else {
-        let classesPerDay = document.getElementById('classRate') ? parseInt(document.getElementById('classRate').value) : 6;
-        let needed = Math.ceil((want * total - 100 * present) / (100 - want));
-        needed = Math.max(0, needed);
-        let days = (needed / classesPerDay).toFixed(1);
-
-        resBox.classList.add('status-fail');
-        currentPercText.style.color = "#d9534f";
-        details.innerHTML = `
-            <span class="highlight-red">❌ Below Target!</span><br><br>
-            📍 Classes still needed: <span class="highlight-red">${needed}</span><br>
-            📅 Estimated days: <span class="highlight-red">${days} days</span><br><br>
-            <span style="font-size: 14px; color: #888;">
-                Assuming 
-                <select id="classRate" class="inline-select" onchange="calculate()">
-                    <option value="5" ${classesPerDay == 5 ? 'selected' : ''}>5</option>
-                    <option value="6" ${classesPerDay == 6 ? 'selected' : ''}>6</option>
-                    <option value="7" ${classesPerDay == 7 ? 'selected' : ''}>7</option>
-                    <option value="8" ${classesPerDay == 8 ? 'selected' : ''}>8</option>
-                    <option value="9" ${classesPerDay == 9 ? 'selected' : ''}>9</option>
-                    <option value="10" ${classesPerDay == 10 ? 'selected' : ''}>10</option>
-                </select> 
-                classes per day
-            </span>
-        `;
+    // ====================== FORM FUNCTIONS ======================
+    function resetForm() {
+        document.getElementById('present').value = '';
+        document.getElementById('total').value = '';
+        document.getElementById('want').value = '';
+        document.getElementById('result').style.display = 'none';
+        localStorage.removeItem("attendanceData");
     }
 
-    saveToHistory(present, total, want, currentResult);
-}
-
-function spawnConfetti(count = 50) {
-    const colors = ["#ff4d4d", "#4dff88", "#4db8ff", "#ffd24d", "#b84dff"];
-    for (let i = 0; i < count; i++) {
-        let confetti = document.createElement('div');
-        confetti.classList.add('confetti');
-        confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-        confetti.style.left = Math.random()*window.innerWidth + 'px';
-        confetti.style.top = '-10px';
-        confetti.style.width = confetti.style.height = (Math.random()*6+4) + 'px';
-        document.body.appendChild(confetti);
-
-        confetti.animate([
-            { transform: `translateY(0) rotate(0deg)`, opacity:1 },
-            { transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random()*720}deg)`, opacity:0 }
-        ], {
-            duration: 2000 + Math.random()*1000,
-            easing: 'ease-out'
-        }).onfinish = () => confetti.remove();
+    function saveData(present, total, want) {
+        localStorage.setItem("attendanceData", JSON.stringify({ present, total, want }));
     }
-}
 
-let clicks = 0;
-document.querySelector(".footer").addEventListener("click", () => {
-    clicks++;
-    if (clicks === 5) {
-        const card = document.querySelector(".card");
-        card.classList.add("easter-activated");
-        setTimeout(() => card.classList.remove("easter-activated"), 900);
-        spawnConfetti(50);
-        console.log("🎉 Developer Mode Activated — Sharavan Raj was here!");
-        clicks = 0;
-    }
-});
+    // ====================== MAIN CALCULATION ======================
+    function calculate() {
+        let present = parseFloat(document.getElementById('present').value);
+        let total = parseFloat(document.getElementById('total').value);
+        let want = parseFloat(document.getElementById('want').value);
+        let resBox = document.getElementById('result');
+        let details = document.getElementById('details');
+        let currentPercText = document.getElementById('currentPerc');
 
-// ==================== CLEAN INSTALL POPUP FOR PHONES ====================
-let deferredPrompt;
-const installBtn = document.getElementById("installBtn");
-
-let installPopup = null;
-
-// Create beautiful install popup
-function createInstallPopup() {
-    installPopup = document.createElement("div");
-    installPopup.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 25px;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        max-width: 320px;
-        width: 90%;
-        text-align: center;
-        z-index: 9999;
-        display: none;
-        border: 1px solid #ddd;
-    `;
-
-    installPopup.innerHTML = `
-        <h3 style="margin: 0 0 15px 0; color: #007bff;">📲 Install Attendance Planner</h3>
-        <p style="margin: 0 0 20px 0; color: #555; font-size: 15px;">
-            Get the app on your home screen for quick access — works offline too!
-        </p>
-        <button id="popupInstallBtn" style="
-            background: #007bff; 
-            color: white; 
-            border: none; 
-            padding: 14px 30px; 
-            border-radius: 10px; 
-            font-size: 16px; 
-            font-weight: 600;
-            width: 100%;
-            margin-bottom: 10px;
-        ">Install App</button>
+        if (isNaN(present) || isNaN(total) || isNaN(want) || total <= 0 || present < 0 || want <= 0 || want >= 100) {
+            alert("Please enter valid numbers (Target: 1-99%)");
+            return;
+        }
         
-        <button id="popupCloseBtn" style="
-            background: transparent; 
-            color: #666; 
-            border: 1px solid #ccc; 
-            padding: 12px 30px; 
-            border-radius: 10px; 
-            font-size: 15px;
-            width: 100%;
-        ">Maybe Later</button>
-    `;
+        if (present > total) {
+            alert("Present classes cannot exceed total classes!");
+            return;
+        }
 
-    document.body.appendChild(installPopup);
+        saveData(present, total, want);
 
-    // Install button in popup
-    document.getElementById("popupInstallBtn").addEventListener("click", async () => {
-        if (!deferredPrompt) return;
-        installPopup.style.display = "none";
-        deferredPrompt.prompt();
+        let currentResult = (present / total) * 100;
+        resBox.style.display = "block";
+        resBox.classList.remove('status-pass', 'status-fail'); 
+        currentPercText.innerText = currentResult.toFixed(1) + "%";
 
-        const choice = await deferredPrompt.userChoice;
-        console.log("Install choice:", choice.outcome);
-        deferredPrompt = null;
+        if (currentResult >= want) {
+            let canMiss = Math.max(0, Math.floor((100 * present / want) - total));
+            resBox.classList.add('status-pass');
+            currentPercText.style.color = "#28a745";
+            details.innerHTML = `
+                <span class="highlight-green">✅ Above Target!</span><br>
+                You can safely miss <span class="highlight-green">${canMiss}</span> more classes while staying above ${want}%.
+            `;
+        } else {
+            let classesPerDay = 6;
+            let needed = Math.ceil((want * total - 100 * present) / (100 - want));
+            needed = Math.max(0, needed);
+            let days = (needed / classesPerDay).toFixed(1);
+
+            resBox.classList.add('status-fail');
+            currentPercText.style.color = "#d9534f";
+            details.innerHTML = `
+                <span class="highlight-red">❌ Below Target!</span><br><br>
+                📍 Classes still needed: <span class="highlight-red">${needed}</span><br>
+                📅 Estimated days: <span class="highlight-red">${days} days</span><br><br>
+                <span style="font-size: 14px; color: #888;">
+                    Assuming 
+                    <select id="classRate" class="inline-select" onchange="calculate()">
+                        <option value="5">5</option>
+                        <option value="6" selected>6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select> 
+                    classes per day
+                </span>
+            `;
+        }
+
+        saveToHistory(present, total, want, currentResult);
+    }
+
+    // ====================== CONFETTI FUNCTION ======================
+    function spawnConfetti(count = 50) {
+        const colors = ["#ff4d4d", "#4dff88", "#4db8ff", "#ffd24d", "#b84dff"];
+        for (let i = 0; i < count; i++) {
+            let confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+            confetti.style.left = Math.random()*window.innerWidth + 'px';
+            confetti.style.top = '-10px';
+            confetti.style.width = confetti.style.height = (Math.random()*6+4) + 'px';
+            document.body.appendChild(confetti);
+
+            confetti.animate([
+                { transform: `translateY(0) rotate(0deg)`, opacity:1 },
+                { transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random()*720}deg)`, opacity:0 }
+            ], {
+                duration: 2000 + Math.random()*1000,
+                easing: 'ease-out'
+            }).onfinish = () => confetti.remove();
+        }
+    }
+
+    // ====================== EASTER EGG ======================
+    let clicks = 0;
+    document.querySelector(".footer").addEventListener("click", () => {
+        clicks++;
+        if (clicks === 5) {
+            const card = document.querySelector(".card");
+            card.classList.add("easter-activated");
+            setTimeout(() => card.classList.remove("easter-activated"), 900);
+            spawnConfetti(50);
+            console.log("🎉 Developer Mode Activated — Sharavan Raj was here!");
+            clicks = 0;
+        }
     });
 
-    // Close button
-    document.getElementById("popupCloseBtn").addEventListener("click", () => {
-        installPopup.style.display = "none";
-    });
-}
-
-// Main beforeinstallprompt handler
-window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = "block";
-    console.log("✅ Install prompt available");
-});
-
-// Show popup if button doesn't appear (especially useful on phones)
-setTimeout(() => {
-    if (installBtn.style.display !== "block" && !deferredPrompt) {
-        if (!installPopup) createInstallPopup();
-        installPopup.style.display = "block";
-        console.log("📱 Showing install popup for mobile");
+    // ====================== VISITOR COUNTER ======================
+    async function updateVisitCount() {
+        const countEl = document.getElementById('visitCount');
+        try {
+            const response = await fetch('https://api.counterapi.xyz/hit/attendance-planner-pro/visits');
+            const data = await response.json();
+            
+            if (data && typeof data.value !== 'undefined') {
+                countEl.textContent = data.value.toLocaleString();
+            } else {
+                countEl.textContent = '—';
+            }
+        } catch (error) {
+            console.log("Visitor counter temporarily unavailable");
+            countEl.textContent = '—';
+        }
     }
-}, 4500);  // Show after 4.5 seconds
 
-// Hide popup when app is installed
-window.addEventListener("appinstalled", () => {
-    installBtn.style.display = "none";
-    if (installPopup) installPopup.style.display = "none";
-    console.log("🎉 App installed successfully!");
-});
-// ==================== CLEAN INSTALL POPUP END ====================
+    // ====================== PAGE LOAD ======================
+    window.onload = function() {
+        // Load saved form data
+        let saved = localStorage.getItem("attendanceData");
+        if (saved) {
+            let data = JSON.parse(saved);
+            document.getElementById("present").value = data.present || '';
+            document.getElementById("total").value = data.total || '';
+            document.getElementById("want").value = data.want || '';
+        }
 
-// ==================== SERVICE WORKER REGISTRATION ====================
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registered successfully:', registration.scope);
-      })
-      .catch((error) => {
-        console.log('Service Worker registration failed:', error);
-      });
-  });
-}
-// ==================== SERVICE WORKER REGISTRATION END ====================
-
-// Original window.onload
-window.onload = function() {
-    let saved = localStorage.getItem("attendanceData");
-    if (saved) {
-        let data = JSON.parse(saved);
-        document.getElementById("present").value = data.present || '';
-        document.getElementById("total").value = data.total || '';
-        document.getElementById("want").value = data.want || '';
-    }
-};
+        // Start visitor counter
+        updateVisitCount();
+    };
 </script>
 </body>
 </html>
